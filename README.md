@@ -33,7 +33,6 @@ To use Windows Setup Helper you'll need to add the project files to a Windows in
   * Change install.wim with new or customized versions without effecting the customizations you make with this project
   * Have multiple install.wim images you can choose from (future version)
   * Use the boot image with PXE booting and still have all the customizations available
-* Starts a VNC server so you can remotely connect from another computer
 * Automatically add drivers to WinPE that you provide (useful for storage drivers when the installer can't detect drives)
 * Has a basic taskbar for switching between open windows
 
@@ -60,7 +59,6 @@ You can add any x64 executable, .bat, .au3, .ps1, or .reg but here are some basi
 * [Crystal DiskInfo & DiskMark](https://github.com/hiyohiyo) For Disk Benchmark and Viewing SMART Data (Portable exe from my project [here](https://github.com/jmclaren7/crystaldisk-sfx))
 * [GSmartControl](https://gsmartcontrol.shaduri.dev/) For Viewing SMART Data  (Portable exe from my project [here](https://github.com/jmclaren7/gsmartcontrol-sfx))
 * [ReactOS Paint](https://reactos.org/) For Viewing Images
-* [TightVNC](https://www.tightvnc.com/) Server For Remote Access To WinPE
 * [NTPWEdit](https://github.com/jmclaren7/ntpwedit) Offline Password Reset
 * [Rufus](https://github.com/pbatard/rufus) USB Formatting Utility
 
@@ -143,18 +141,9 @@ If you specified "D:\extrafiles" in the build script you would likely want to ha
 * Windows Pro is used by default for automated installs, you can switch to home using the advanced menu
 * You can customize Helper\autounattend.xml to change things like language, timezone, domain join or other autounattend settings, some values are manipulated by the helper script, most of these show as commented values in the xml.
 
-### TightVNC
-
-Running TightVNC server allows remote access to the WinPE instance from another machine on the network. This can be useful if you had a user at a remote site boot to a USB and then you VNC into it to do recovery, diagnostics or Windows installation.
-
-* A startup script is in PEAutoRun\vncserver
-* The port and password are configured in "PEAutoRun\vncserver\settings.ini"
-  * Defaults to port 5950 and password "vncwatch"
-* When the VNC service is running "VNC Running" will appear in the status bar
-
 ### NetBird
 
-NetBird is an overlay/mesh network tool and the NetBird client happens to work well in WinPE, implemented correctly you can have your WinPE boot and be remotely accessible with VNC over the NetBird network automatically. When a WinPE client is booted and online you'll see it apear in the Netbird dashboard along with its Netbird IP. Use your prefered VNC client to connect to that IP one the correct port (see TightVNC information above)
+NetBird is an overlay/mesh network tool and the NetBird client happens to work well in WinPE, implemented correctly you can have your WinPE boot and be remotely accessible over the NetBird network automatically. When a WinPE client is booted and online you'll see it appear in the Netbird dashboard along with its Netbird IP.
 
 * A startup script is provided in PEAutoRun\NetBird
 * Configure the script with a setup key generated via Netbird, be sure you understand the security implications
@@ -172,5 +161,5 @@ The default settings Netbird uses would not be secure for this use case and woul
   * Add a group to "Auto-assigned groups", call it "PE" so we can make access rules for WinPE peers
 * Configure "Access Control Policies" to allow traffic to WinPE but not from WinPE
   * Remove the default rule that allows all traffic in all directions
-  * Create a new rule with Source=Admin, Destination=PE, Port=5950
+  * Create a new rule with Source=Admin, Destination=PE with appropriate ports for your remote access needs
 * Assign your user or your peer the "Admin" group so you can access any WinPE peers

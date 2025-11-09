@@ -243,8 +243,8 @@ Local $RebootPrompt = False
 Local $AutoInstallWait = False
 Local $NormalInstallWait = False
 Local $Reboot = False
-Local $EdditionChoice = "Windows 11 Pro"
-If @OSVersion = "WIN_10" Then $EdditionChoice = "Windows 10 Pro"
+Local $EditionChoice = "Windows 11 Pro"
+If @OSVersion = "WIN_10" Then $EditionChoice = "Windows 10 Pro"
 
 ; Set GUI Icon
 GUISetIcon($SystemDrive & "sources\setup.exe")
@@ -471,14 +471,14 @@ While 1
 						_Log("StringRegExpReplace @error=" & @error)
 
 						; Edition and key
-						$EdditionChoice = GUICtrlRead($EditionCombo)
-						$RegExReplacement = "${1}${2}" & $EdditionChoice & "${3}${4}"
-						If $EdditionChoice = "Not Specified" Then $RegExReplacement = "${1}${4}"
+						$EditionChoice = GUICtrlRead($EditionCombo)
+						$RegExReplacement = "${1}${2}" & $EditionChoice & "${3}${4}"
+						If $EditionChoice = "Not Specified" Then $RegExReplacement = "${1}${4}"
 						$sAutounattendData = StringRegExpReplace($sAutounattendData, "(?si)(<InstallFrom>.*?)(<Value>).*?(</Value>)(.*?</InstallFrom>)", $RegExReplacement)
-						If StringInStr($EdditionChoice, "Home") Then
+						If StringInStr($EditionChoice, "Home") Then
 							$sAutounattendData = StringReplace($sAutounattendData, "<!--KeyHome", "")
 							$sAutounattendData = StringReplace($sAutounattendData, "KeyHome-->", "")
-						ElseIf StringInStr($EdditionChoice, "Pro") Then
+						ElseIf StringInStr($EditionChoice, "Pro") Then
 							$sAutounattendData = StringReplace($sAutounattendData, "<!--KeyPro", "")
 							$sAutounattendData = StringReplace($sAutounattendData, "KeyPro-->", "")
 						EndIf
