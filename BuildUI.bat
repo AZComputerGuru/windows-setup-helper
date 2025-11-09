@@ -148,44 +148,35 @@ SET "AUTO_MAKEISO=[X]"
 
 REM Try to read from Build.bat if it exists
 IF EXIST "Build.bat" (
-    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /B "set sourceiso=" Build.bat') DO SET "SOURCEISO=%%B"
-    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /B "set mediapath=" Build.bat') DO SET "MEDIAPATH=%%B"
-    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /B "set outputiso=" Build.bat') DO SET "OUTPUTISO=%%B"
-    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /B "set extrafiles=" Build.bat') DO SET "EXTRAFILES=%%B"
+    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /R /C:"^set sourceiso=" Build.bat') DO SET "SOURCEISO=%%B"
+    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /R /C:"^set mediapath=" Build.bat') DO SET "MEDIAPATH=%%B"
+    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /R /C:"^set outputiso=" Build.bat') DO SET "OUTPUTISO=%%B"
+    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /R /C:"^set extrafiles=" Build.bat') DO SET "EXTRAFILES=%%B"
 
-    REM Read toggle settings
-    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /B "set \"auto_extractiso=" Build.bat') DO (
-        SET "TEMP=%%B"
-        IF "!TEMP:~0,1!"=="*" (SET "AUTO_EXTRACTISO=[X]") ELSE (SET "AUTO_EXTRACTISO=[ ]")
-    )
-    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /B "set \"auto_mountwim=" Build.bat') DO (
-        SET "TEMP=%%B"
-        IF "!TEMP:~0,1!"=="*" (SET "AUTO_MOUNTWIM=[X]") ELSE (SET "AUTO_MOUNTWIM=[ ]")
-    )
-    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /B "set \"auto_copyfiles=" Build.bat') DO (
-        SET "TEMP=%%B"
-        IF "!TEMP:~0,1!"=="*" (SET "AUTO_COPYFILES=[X]") ELSE (SET "AUTO_COPYFILES=[ ]")
-    )
-    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /B "set \"auto_addpackages=" Build.bat') DO (
-        SET "TEMP=%%B"
-        IF "!TEMP:~0,1!"=="*" (SET "AUTO_ADDPACKAGES=[X]") ELSE (SET "AUTO_ADDPACKAGES=[ ]")
-    )
-    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /B "set \"auto_disabledpi=" Build.bat') DO (
-        SET "TEMP=%%B"
-        IF "!TEMP:~0,1!"=="*" (SET "AUTO_DISABLEDPI=[X]") ELSE (SET "AUTO_DISABLEDPI=[ ]")
-    )
-    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /B "set \"auto_unmountcommit=" Build.bat') DO (
-        SET "TEMP=%%B"
-        IF "!TEMP:~0,1!"=="*" (SET "AUTO_UNMOUNTCOMMIT=[X]") ELSE (SET "AUTO_UNMOUNTCOMMIT=[ ]")
-    )
-    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /B "set \"auto_trimimages=" Build.bat') DO (
-        SET "TEMP=%%B"
-        IF "!TEMP:~0,1!"=="*" (SET "AUTO_TRIMIMAGES=[X]") ELSE (SET "AUTO_TRIMIMAGES=[ ]")
-    )
-    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /B "set \"auto_makeiso=" Build.bat') DO (
-        SET "TEMP=%%B"
-        IF "!TEMP:~0,1!"=="*" (SET "AUTO_MAKEISO=[X]") ELSE (SET "AUTO_MAKEISO=[ ]")
-    )
+    REM Read toggle settings (check first character)
+    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /R /C:"^set \"auto_extractiso=" Build.bat') DO SET "_VAL=%%B"
+    IF "!_VAL:~0,1!"=="*" (SET "AUTO_EXTRACTISO=[X]") ELSE (SET "AUTO_EXTRACTISO=[ ]")
+
+    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /R /C:"^set \"auto_mountwim=" Build.bat') DO SET "_VAL=%%B"
+    IF "!_VAL:~0,1!"=="*" (SET "AUTO_MOUNTWIM=[X]") ELSE (SET "AUTO_MOUNTWIM=[ ]")
+
+    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /R /C:"^set \"auto_copyfiles=" Build.bat') DO SET "_VAL=%%B"
+    IF "!_VAL:~0,1!"=="*" (SET "AUTO_COPYFILES=[X]") ELSE (SET "AUTO_COPYFILES=[ ]")
+
+    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /R /C:"^set \"auto_addpackages=" Build.bat') DO SET "_VAL=%%B"
+    IF "!_VAL:~0,1!"=="*" (SET "AUTO_ADDPACKAGES=[X]") ELSE (SET "AUTO_ADDPACKAGES=[ ]")
+
+    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /R /C:"^set \"auto_disabledpi=" Build.bat') DO SET "_VAL=%%B"
+    IF "!_VAL:~0,1!"=="*" (SET "AUTO_DISABLEDPI=[X]") ELSE (SET "AUTO_DISABLEDPI=[ ]")
+
+    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /R /C:"^set \"auto_unmountcommit=" Build.bat') DO SET "_VAL=%%B"
+    IF "!_VAL:~0,1!"=="*" (SET "AUTO_UNMOUNTCOMMIT=[X]") ELSE (SET "AUTO_UNMOUNTCOMMIT=[ ]")
+
+    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /R /C:"^set \"auto_trimimages=" Build.bat') DO SET "_VAL=%%B"
+    IF "!_VAL:~0,1!"=="*" (SET "AUTO_TRIMIMAGES=[X]") ELSE (SET "AUTO_TRIMIMAGES=[ ]")
+
+    FOR /F "tokens=1,* delims==" %%A IN ('FINDSTR /R /C:"^set \"auto_makeiso=" Build.bat') DO SET "_VAL=%%B"
+    IF "!_VAL:~0,1!"=="*" (SET "AUTO_MAKEISO=[X]") ELSE (SET "AUTO_MAKEISO=[ ]")
 )
 GOTO :EOF
 
